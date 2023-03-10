@@ -65,46 +65,10 @@
       [else (/ (add-list lst 0) (length lst))])))
 (average '(1 2 3 4 5))
 
-;; Recibe una lista de numeros y regresa la desviacion estandar
-;; (std '(1 2 3 4 5)) -> 1.4142135623730951
-(define std
-  (lambda (lst)
-    (define avg (average lst))
-    (define (aux lst)
-      (cond
-        [(empty? lst) 0]
-        [else (+ (expt (- (car lst) avg) 2) (aux (cdr lst)))]))
-    (sqrt (/ (aux lst) (length lst)))))
-(std '(1 2 3 4 5))
+;;Standard deviation
 
-;; Recibe un numero y una lista y regresa una nueva lista
-;; repitiendo cada elemento de la lista n veces
-;; (replic 3 '(1 2 3)) -> '(1 1 1 2 2 2 3 3 3)
-(define replic
-  (lambda (n lst)
-    (cond
-      [(empty? lst) '()]
-      [else (append (make-list n (car lst)) (replic n (cdr lst)))])))
-(replic 3 '(1 2 3))
+;;Replic
 
-;; Recibe una lista de elementos y regresa una nueva lista
-;; con el primer elemento 1 vez el segundo 2 el tercero 3
-;; y asi sucesivamente
-;; (expand '(1 2 3)) -> '(1 2 2 3 3 3)
-(define (expand lst)
-  (define (aux lst n)
-    (cond
-      ((empty? lst) '())
-      (else (append (make-list n (car lst))
-                    (aux (cdr lst) (+ n 1))))))
-  (aux lst 1))
-(expand '(1 2 3))
+;;Expand
 
-;; Recibe un numero y regresa su equivalente en binario
-;; (binary 10) -> 1010
-(define binary
-  (lambda (n)
-    (cond
-      [(eq? 0 n) '()]
-      [else (append (binary (quotient n 2)) (list (remainder n 2)))])))
-(binary 10)
+;;Binary
