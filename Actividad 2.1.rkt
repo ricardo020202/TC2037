@@ -1,3 +1,5 @@
+;;Jose Ricardo Rosales Castañeda - A01709449 
+;; Gamaliel Maruines Olvera - A01708746
 #lang racket
 ;; temp_c: number -> number
 (define temp_c
