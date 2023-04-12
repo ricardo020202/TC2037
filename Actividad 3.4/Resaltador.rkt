@@ -1,5 +1,5 @@
 ;; Jose Ricardo Rosales Castañeda
-;; Gamaliel Marines Olvera
+;; Dante David Perez Perez
 
 ;Resaltador de sinrtaxis para C#
 
@@ -105,7 +105,7 @@
 
 ;; function to tokenize a given string
 (define (tokenize s)
-  (regexp-split #rx"[ \t\n]+" s))
+  (regexp-split #rx"[ \t \n .]+" s))
 
 ;; function to replace all tokens
 (define (replace-all-tokens s)
@@ -183,4 +183,3 @@ span.comment {
   (generate-output-file))
 
 (run)
-
