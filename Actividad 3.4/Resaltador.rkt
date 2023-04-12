@@ -103,13 +103,9 @@
     [(regexp-match #rx"^[a-zA-Z_][a-zA-Z0-9_]*$" s) (replace-identifier s)]
     [else s]))
 
-;; function to tokenize a given string
-(define (tokenize s)
-  (regexp-split #rx"[ \t \n .]+" s))
-
 ;; function to replace all tokens
 (define (replace-all-tokens s)
-  (string-join (map categorize-tokens (tokenize s)) " "))
+  (string-join (map categorize-tokens (string-split s #rx" ")) " "))
 
 ;; function to read input file
 (define (read-input-file)

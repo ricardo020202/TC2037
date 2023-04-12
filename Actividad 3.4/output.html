@@ -6,6 +6,46 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <pre><span class="comment">//Description:</span> <span class="identifier">A</span> <span class="identifier">simple</span> <span class="identifier">calculator</span> <span class="keyword">using</span> System; <span class="keyword">namespace</span> <span class="identifier">Calculator</span> <span class="separator">{</span> <span class="keyword">class</span> <span class="identifier">Program</span> <span class="separator">{</span> <span class="keyword">static</span> <span class="keyword">void</span> Main(string[] args) <span class="separator">{</span> <span class="keyword">Console</span> WriteLine("Enter <span class="identifier">a</span> number"); <span class="keyword">double</span> <span class="identifier">num1</span> <span class="operator">=</span> <span class="identifier">Convert</span> ToDouble(Console ReadLine()); <span class="keyword">Console</span> WriteLine("Enter <span class="identifier">another</span> number"); <span class="keyword">double</span> <span class="identifier">num2</span> <span class="operator">=</span> <span class="identifier">Convert</span> ToDouble(Console ReadLine()); <span class="keyword">Console</span> WriteLine("Enter <span class="identifier">an</span> operator"); <span class="keyword">string</span> <span class="identifier">op</span> <span class="operator">=</span> <span class="keyword">Console</span> ReadLine(); <span class="keyword">if</span> (op <span class="operator">==</span> "+") <span class="separator">{</span> <span class="keyword">Console</span> WriteLine(num1 <span class="operator">+</span> num2); <span class="separator">}</span> <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> "-") <span class="separator">{</span> <span class="keyword">Console</span> WriteLine(num1 <span class="operator">-</span> num2); <span class="separator">}</span> <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> <span class="comment">"/")</span> <span class="separator">{</span> <span class="keyword">Console</span> WriteLine(num1 <span class="operator">/</span> num2); <span class="separator">}</span> <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> "*") <span class="separator">{</span> <span class="keyword">Console</span> WriteLine(num1 <span class="operator">*</span> num2); <span class="separator">}</span> <span class="keyword">else</span> <span class="separator">{</span> <span class="keyword">Console</span> WriteLine("Invalid operator"); <span class="separator">}</span> <span class="separator">}</span> <span class="separator">}</span> <span class="separator">}</span> </pre>
+  <pre><span class="comment">//Description:</span> <span class="identifier">A</span> <span class="identifier">simple</span> <span class="identifier">calculator</span> 
+
+using System;
+
+namespace Calculator
+{
+    <span class="keyword">class</span> Program
+    {
+        <span class="keyword">static</span> <span class="keyword">void</span> Main(string[] args)
+        {
+            Console.WriteLine("Enter <span class="identifier">a</span> number");
+            <span class="keyword">double</span> <span class="identifier">num1</span> <span class="operator">=</span> Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter <span class="identifier">another</span> number");
+            <span class="keyword">double</span> <span class="identifier">num2</span> <span class="operator">=</span> Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter <span class="identifier">an</span> operator");
+            <span class="keyword">string</span> <span class="identifier">op</span> <span class="operator">=</span> Console.ReadLine();
+
+            <span class="keyword">if</span> (op <span class="operator">==</span> "+")
+            {
+                Console.WriteLine(num1 <span class="operator">+</span> num2);
+            }
+            <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> "-")
+            {
+                Console.WriteLine(num1 <span class="operator">-</span> num2);
+            }
+            <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> <span class="comment">"/")
+</span>            {
+                Console.WriteLine(num1 <span class="operator">/</span> num2);
+            }
+            <span class="keyword">else</span> <span class="keyword">if</span> (op <span class="operator">==</span> "*")
+            {
+                Console.WriteLine(num1 <span class="operator">*</span> num2);
+            }
+            else
+            {
+                Console.WriteLine("Invalid operator");
+            }
+        }
+    }
+}
+</pre>
 </body>
 </html>
