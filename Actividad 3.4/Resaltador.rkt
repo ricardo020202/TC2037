@@ -9,37 +9,34 @@
 
 ;; keywords from c#
 (define keyword
-  '("abstract" "as" "base" "bool" "break" "byte" "case" "catch" "char" "checked"
-    "class" "const" "continue" "decimal" "default" "delegate" "do" "double" "else"
-    "enum" "event" "explicit" "extern" "false" "finally" "fixed" "float" "for"
-    "foreach" "goto" "if" "implicit" "in" "int" "interface" "internal" "is" "lock"
-    "long" "namespace" "new" "null" "object" "operator" "out" "override" "params"
-    "private" "protected" "public" "readonly" "ref" "return" "sbyte" "sealed" "short"
-    "sizeof" "stackalloc" "static" "string" "struct" "switch" "this" "throw" "true"
-    "try" "typeof" "uint" "ulong" "unchecked" "unsafe" "ushort" "using" "virtual"
-    "void" "volatile" "while"))
+  (list 
+    "abstract" "as" "base" "bool" "break" "byte" "case" "catch" "char" 
+    "checked" "class" "const" "continue" "decimal" "default" "delegate" 
+    "do" "double" "else" "endif" "enum" "event" "explicit" "extern" 
+    "false" "finally" "fixed" "float" "for" "foreach" "goto" "if" 
+    "implicit" "in" "int" "interface" "internal" "is" "lock" "long" 
+    "namespace" "new" "null" "object" "operator" "out" "override" 
+    "params" "private" "protected" "public" "readonly" "ref" "return"
+    "sbyte" "sealed" "short" "sizeof" "stackalloc" "static" "string"
+    "struct" "switch" "this" "throw" "true" "try" "typeof" "uint"
+    "ulong" "unchecked" "unsafe" "ushort" "using" "virtual" "void"
+    "volatile" "while" "#if" "#endif" "#else" "Console"
+   )
+)
 
 ;; operators from c#
 (define operator
-  '("+" "-" "*" "/" "%" "&" "|" "^" "!" "~" "=" "<" ">" "+=" "-=" "*=" "/=" "%="
-    "&=" "|=" "^=" "<<" ">>" ">>>" "<<=" ">>=" ">>>=" "==" "!=" "<=" ">=" "&&" "||"
-    "++" "--" "?" "??"))
+    (list
+        "+" "-" "*" "/" "%" "^" "&" "|" "~" "!" "=" "<" ">" "?" 
+        ":" ";" "," "." "++" "--" "&&" "||" "==" "!=" "<=" ">="
+        "+=" "-=" "*=" "/=" "%=" "^=" "&=" "|=" "<<=" ">>=" "=>"
+        "??"
+    )
+)
 
 ;; separators from c#
 (define separator
   '(";" "," "." "(" ")" "[" "]" "{" "}" "<" ">" ":" "::" "..." "=>" "??"))
-
-;; numbers using regexp from c#
-(define number
-  (regexp "(\\b[0-9]+(\\.[0-9]*)?\\b)"))
-
-;; strings using regexp from c#
-(define string
-  (regexp "(\"(\\\\.|[^\\\\\"])*\")"))
-
-;; all types of comments using regexp from c#
-(define comment
-  (regexp "((//.*$)|(\\/\\*.*\\*\\/))"))
 
 ;; input file
 (define input-file "input.cs")
@@ -89,20 +86,30 @@
 (define (replace-comment s)
   (string-append "<span class=\"comment\">" s "</span>"))
 
+;; function to replace identifiers
+(define (replace-identifier s)
+  (string-append "<span class=\"identifier\">" s "</span>"))
+
 ;; function to categorize tokens
 (define (categorize-tokens s)
   (cond
     [(member s keyword) (replace-keyword s)]
     [(member s operator) (replace-operator s)]
     [(member s separator) (replace-separator s)]
-    [(regexp-match number s) (replace-number s)]
-    [(regexp-match string s) (replace-string s)]
-    [(regexp-match comment s) (replace-comment s)]
+    [(regexp-match #rx"^[0-9x]+$"  s) (replace-number s)]
+    [(regexp-match #rx"^\".*\"$" s) (replace-string s)]
+    [(regexp-match #rx"//." s) (replace-comment s)]
+    [(regexp-match #rx"/*.*/" s) (replace-comment s)]
+    [(regexp-match #rx"^[a-zA-Z_][a-zA-Z0-9_]*$" s) (replace-identifier s)]
     [else s]))
+
+;; function to tokenize a given string
+(define (tokenize s)
+  (regexp-split #rx"[ \t\n]+" s))
 
 ;; function to replace all tokens
 (define (replace-all-tokens s)
-  (string-join (map categorize-tokens (string-split s (or (regexp "[ \t \n \r .]")))) " ")) 
+  (string-join (map categorize-tokens (tokenize s)) " "))
 
 ;; function to read input file
 (define (read-input-file)
