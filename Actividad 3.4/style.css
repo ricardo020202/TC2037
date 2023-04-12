@@ -1,0 +1,43 @@
+body {
+  background-color: #2b2b2b;
+  color: #f8f8f2;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+pre {
+  margin: 0;
+}
+
+span {
+  display: inline-block;
+}
+
+span.keyword {
+  color: #f92672;
+}
+
+span.operator {
+  color: #66d9ef;
+}
+
+span.separator {
+  color: yellow;
+}
+
+span.identifier {
+  color: #a6e22e;
+}
+
+span.number {
+  color: #ae81ff;
+}
+
+span.string {
+  color: #e6db74;
+}
+
+span.comment {
+  color: #75715e;
+}

@@ -1,3 +1,5 @@
+;;Jose Ricardo Rosales Castañeda - A01709449 
+;; Gamaliel Maruines Olvera - A01708746
 #lang racket
 ;1.- insert (inserta un elemento en una lista ordenada)
 ; (insert 4 '(5 6 7 8)) -> '(4 5 6 7 8)
