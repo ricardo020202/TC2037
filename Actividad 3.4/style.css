@@ -3,11 +3,11 @@ body {
   color: #f8f8f2;
   font-family: Consolas, monospace;
   font-size: 14px;
-  line-height: 1.5;
+  margin-left: 30px;
 }
 
 pre {
-  margin: 0;
+  margin: 0px;
 }
 
 span {
@@ -15,29 +15,36 @@ span {
 }
 
 span.keyword {
-  color: #f92672;
+  color: #ff0000;
 }
 
 span.operator {
-  color: #66d9ef;
+  color: #d10000;
+  margin: 0 -7px;
 }
 
 span.separator {
-  color: yellow;
+  color: #ffff00;
+  margin: 0 -5px;
 }
 
 span.identifier {
-  color: #a6e22e;
+  color: #cccccc;
 }
 
 span.number {
-  color: #ae81ff;
+  color: #bf00ff;
 }
 
 span.string {
-  color: #e6db74;
+  color: #ffee58;
+  margin-right: -5px;
 }
 
 span.comment {
   color: #75715e;
+}
+
+span.System {
+  color: #8453ff;
 }
