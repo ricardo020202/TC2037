@@ -67,15 +67,14 @@
 )
 
 ;;Replace all tokens
-(define (replace-all-tokens line open-block-comment)
+(define (replace-all-tokens s open-block-comment)
     (define word '())
     (define list-line '())
     (define open-quotes #f)
-
     (define possible-line-comment #f)
     (define open-line-comment #f)
 
-    (define ch (regexp-split #px"" line))
+    (define ch (regexp-split #px"" s))
 
      (for/last ([char ch])
       (when (and (eq? char (last ch)) (or open-line-comment open-block-comment))
@@ -87,7 +86,7 @@
         [(regexp-match? #rx"[a-zA-Z0-9_]" char)
          (set! word (append word (list char)))]
 
-        ; Match for line comments
+        ; Match for s comments
         [(regexp-match #px"/" char) 
           (cond 
             [possible-line-comment 
@@ -186,15 +185,15 @@
 
   (define open-block-comment #f)
 
-  (for-each (lambda (line)
+  (for-each (lambda (s)
               (when (not open-block-comment) 
-                  (set! open-block-comment (regexp-match? #px"/\\*" line)))
+                  (set! open-block-comment (regexp-match? #px"/\\*" s)))
                   
-              (define tokens (replace-all-tokens line open-block-comment))
+              (define tokens (replace-all-tokens s open-block-comment))
               (define formatted-line (string-join tokens " "))
 
               (when open-block-comment
-                  (set! open-block-comment (not (regexp-match? #px"\\*/" line))))
+                  (set! open-block-comment (not (regexp-match? #px"\\*/" s))))
 
                (write-string (string-append "<pre>" formatted-line "</pre>") output-port))
             input-lines)
@@ -202,4 +201,4 @@
   (write-string html-footer output-port)
   (close-output-port output-port))
 
-(Run input-file output-file)
+(time (Run input-file output-file))
