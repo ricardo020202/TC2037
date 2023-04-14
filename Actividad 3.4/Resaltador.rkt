@@ -55,7 +55,7 @@
 (define (categorize-token s)
     (cond
         [(member s keyword) (string-append "<span class=\"keyword\">" s "</span>")]
-        [(member s operator) (string-append "<span class=\"keyword\">" s "</span>")]
+        [(member s operator) (string-append "<span class=\"operator\">" s "</span>")]
         [(member s separator) (string-append "<span class=\"separator\">" s "</span>")]
         [(member s System) (string-append "<span class=\"System\">" s "</span>")]
         [(regexp-match number s) (string-append "<span class=\"number\">" s "</span>")]
@@ -66,28 +66,24 @@
     )
 )
 
-;;tokenize the line
-(define (tokenize-line line open-block-comment)
+;;Replace all tokens
+(define (replace-all-tokens line open-block-comment)
     (define word '())
     (define list-line '())
-    (define tokenized-line '())
     (define open-quotes #f)
 
     (define possible-line-comment #f)
     (define open-line-comment #f)
 
-    (define chars (regexp-split #px"" line))
+    (define ch (regexp-split #px"" line))
 
-     (for/last ([char chars])
-      (when (and (eq? char (last chars)) (or open-line-comment open-block-comment))
+     (for/last ([char ch])
+      (when (and (eq? char (last ch)) (or open-line-comment open-block-comment))
         (set! list-line (append list-line (list word))))
 
-      ; Match the character with the regular expressions
       (cond 
         [open-block-comment (set! word (append word (list char)))]
-
         [(regexp-match #rx"#" char) (set! word (append word (list char)))]
-
         [(regexp-match? #rx"[a-zA-Z0-9_]" char)
          (set! word (append word (list char)))]
 
@@ -106,23 +102,24 @@
 
         [open-line-comment (set! word (append word (list char)))]
 
-        ; Match for strings
         [(regexp-match? #px"\"" char)
-         (cond
-           [open-quotes 
-            ((lambda ()
-               (set! open-quotes #f)
-               (set! word (append word (list char)))
-               (set! list-line (append list-line (list word)))
-               (set! word '())))]
-            [else ((lambda () 
-              (set! open-quotes #t)
-              (set! word (append word (list char)))))])]
+         ((lambda ()
+            (set! open-quotes (not open-quotes))
+            (set! word (append word (list char)))))]
 
         [open-quotes (set! word (append word (list char)))]
 
         ; Match for operator
-        [(regexp-match? #px"[\\.\\,\\;\\(\\)\\{\\}\\[\\]\\=\\+\\-\\*\\/\\%\\>\\<\\:]" char)
+        [(member char operator)
+         ((lambda ()
+            (set! list-line (append list-line (list word)))
+            (set! word '())
+            (set! word (append word (list char)))
+            (set! list-line (append list-line (list word)))
+            (set! word '())))]
+
+        ; Match for separator
+        [(member char separator)
          ((lambda ()
             (set! list-line (append list-line (list word)))
             (set! word '())
@@ -138,7 +135,6 @@
     )
 
     (define tokens (map (lambda (x) (string-join x "")) list-line))
-
     (define (categorize-tokens tokens)
       (define (loop tokens open-block-comment)
         (cond
@@ -169,7 +165,7 @@
   "<!DOCTYPE html>
 <html>
 <head>
-  <meta charset=\"utf-8\">
+  <meta chet=\"utf-8\">
   <title>Resaltador de sintaxis</title>
   <link rel=\"stylesheet\" href=\"style.css\">
 </head>
@@ -182,23 +178,8 @@
 </body>
 </html>")
 
-;; function to read a file
-(define (read-file file-name)
-    (open-input-file file-name)
-)
-
-;; function to read a line
-(define (read-line port)
-    (read-line port)
-)
-
-;; function to write a file
-(define (write-file file-name)
-    (open-output-file file-name)
-)
-
-;; main
-(define (main input-file output-file)
+;; Run
+(define (Run input-file output-file)
   (define input-lines (file->lines input-file))
   (define output-port (open-output-file output-file))
   (write-string html-header output-port)
@@ -206,23 +187,19 @@
   (define open-block-comment #f)
 
   (for-each (lambda (line)
-              (write-string (string-append "<pre>") output-port)
-
               (when (not open-block-comment) 
                   (set! open-block-comment (regexp-match? #px"/\\*" line)))
                   
-              (define tokens (tokenize-line line open-block-comment))
+              (define tokens (replace-all-tokens line open-block-comment))
               (define formatted-line (string-join tokens " "))
 
               (when open-block-comment
                   (set! open-block-comment (not (regexp-match? #px"\\*/" line))))
 
-              (write-string (string-append formatted-line " ") output-port)
-              (write-string (string-append "</pre>") output-port))
+               (write-string (string-append "<pre>" formatted-line "</pre>") output-port))
             input-lines)
   
   (write-string html-footer output-port)
   (close-output-port output-port))
 
-;;
-(main input-file output-file)
+(Run input-file output-file)
