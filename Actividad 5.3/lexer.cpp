@@ -2,26 +2,50 @@
 #include <fstream>
 #include <regex>
 #include <pthread.h>
+#include <filesystem>
 
 using namespace std;
+namespace fs = std::filesystem;
 
 string lexer(const string& input);
-void htmlFile(string tokenizedCode);
+void htmlFile(const string& tokenizedCode, const string& filename);
 
-int main()
+int main(int argc, char* argv[])
 {
-    ifstream file("input.cs");
-    if (!file.is_open())
-    {
-        cout << "Error opening file" << endl;
+    if (argc < 2) {
+        cout << "Usage: lexer <folder_path>" << endl;
         return 0;
     }
 
-    string input((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-    string tokenizedCode = lexer(input);
+    string folderPath = argv[1];
 
-    htmlFile(tokenizedCode);
+    // Check if the provided folder path exists
+    if (!fs::exists(folderPath) || !fs::is_directory(folderPath)) {
+        cout << "Invalid folder path" << endl;
+        return 0;
+    }
 
+    // Iterate over files in the folder
+    for (const auto& entry : fs::directory_iterator(folderPath)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".cs") {
+            string filePath = entry.path().string();
+
+            ifstream file(filePath);
+            if (!file.is_open()) {
+                cout << "Error opening file: " << filePath << endl;
+                continue;
+            }
+
+            cout << "Processing file: " << filePath << endl;
+
+            string input((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+            string tokenizedCode = lexer(input);
+
+            htmlFile(tokenizedCode, filePath);
+
+            cout << "Output generated for file: " << filePath << endl;
+        }
+    }
     return 0;
 }
 
@@ -105,7 +129,10 @@ string lexer(const string& input)
     return tokenizedCode;
 }
 
-void htmlFile(string tokenizedCode){
+void htmlFile(const string& tokenizedCode, const string& filename){
+
+    string outputFilename = fs::path(filename).stem().string() + ".html";
+
     string html = R"(
         <!DOCTYPE html>
         <html>
