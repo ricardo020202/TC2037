@@ -186,7 +186,7 @@ void htmlFile(const string& tokenizedCode, const string& filename){
         </html>
     )";
 
-    ofstream outfile("output.html", ios::app);
+    ofstream outfile(outputFilename, ios::app);
     if (outfile.is_open())
     {
         outfile << html;
