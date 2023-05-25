@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
     // Print execution times
     cout << "Secuential execution time: " << secuentialTime << " seconds" << endl;
     cout << "Parallel execution time: " << parallelTime - secuentialTime << " seconds" << endl;
+    cout << "Speedup: " << secuentialTime / (parallelTime - secuentialTime) << "x" << endl;
 
     return 0;
 }
