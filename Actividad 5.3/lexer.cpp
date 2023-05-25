@@ -84,7 +84,7 @@ string lexer(const string &input)
     // Regular expressions
     const string keywords = "abstract|as|base|bool|break|byte|case|catch|char|checked|class|const|continue|decimal|default|delegate|double|do|else|enum|event|explicit|extern|false|finally|fixed|float|foreach|for|foreach|goto|if|implicit|int|in|interface|internal|is|lock|long|namespace|new|null|object|operator|out|override|params|private|protected|public|readonly|ref|return|sbyte|sealed|short|sizeof|stackalloc|static|string|struct|switch|this|throw|true|try|typeof|uint|ulong|unchecked|unsafe|ushort|using|virtual|void|volatile|while";
     const string identifiers = "[a-zA-Z_][a-zA-Z0-9_]*";
-    const string operators = "\\+\\+|--|&&|\\|\\||<<|>>|<=|>=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|=>|[-+*/%&|^!=<>]=|[-+*/%&|^<>]";
+    const string operators = "\\+|-|\\|/|%|\\^|&|\\||~|!|=|<|>|\\?|:|;|,|\\.|\\+\\+|--|&&|\\|\\||==|!=|<=|>=|\\+=|-=|\\=|/=|%\\=|\\^=|&\\=|\\|=|<<=|>>=|=>|\\?\\?";
     const string literals = "[0-9]+(\\.[0-9]+)?|\".*\"|'.*'";
     const string comments = "//.*|/\\*.*\\*/";
     const string system = "System|Console|Program|program";
@@ -342,7 +342,7 @@ double parallelExecution(const string &folderPath)
     clock_t start = clock();
 
     // Create the threads
-    pthread_t threads[8];
+    pthread_t threads[10];
     int threadIndex = 0;
 
     // Iterate over the files in the folder
